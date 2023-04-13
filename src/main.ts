@@ -8,7 +8,7 @@ import { configureLogger } from "./helpers/configure-logger"
 import { LevelWithSilent } from 'pino';
 
 dotenv.config()
-export const mainLogger = configureLogger(pino, 'main', process.env.LOGGER_LEVEL as LevelWithSilent)
+export const mainLogger = configureLogger(pino, 'main', (process.env.LOGGER_LEVEL).toLowerCase() as LevelWithSilent)
 
 export const { SURREAL_LOC, SURREAL_USER, SURREAL_PASS } = process.env
 
