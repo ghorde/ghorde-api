@@ -1,2 +1,3 @@
 export * from "./configure-logger"
-export * from "./connect-db"
+export * from "./configure-db"
+export * from './instance-services'

@@ -1,6 +1,6 @@
-const {default: Surreal} = require('surrealdb.js')
+import Surreal from 'surrealdb.js'
 
-export const connectDb: (db: typeof Surreal, db_user:string, db_pass: string) => typeof Surreal = async(db, db_user, db_pass) => {
+export const configureDb: (db: Surreal, db_user:string, db_pass: string) => Promise<Surreal> = async(db, db_user, db_pass) => {
     try {
         console.log("Initializing database...");
         if (!db_user || !db_pass) {

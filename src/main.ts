@@ -1,10 +1,9 @@
-const {default: Surreal} = require('surrealdb.js')
+import Surreal from'surrealdb.js'
 
 import pino from "pino"
 import Express from "express"
 import * as dotenv from 'dotenv'
-import { connectDb } from "./helpers"
-import { configureLogger } from "./helpers"
+import { configureDb, configureLogger, instanceServices } from "./helpers"
 import { LevelWithSilent } from 'pino';
 import router from './routers'
 
@@ -13,9 +12,12 @@ export const mainLogger = configureLogger(pino, 'main', (process.env.LOGGER_LEVE
 
 export const { SURREAL_LOC, SURREAL_USER, SURREAL_PASS } = process.env
 
-export const db = connectDb(new Surreal(SURREAL_LOC), SURREAL_USER, SURREAL_PASS)
+export const db = await configureDb(new Surreal(SURREAL_LOC), SURREAL_USER, SURREAL_PASS) // instance db
+
+const Services = instanceServices(db, ['servers'])
 
 const app = Express()
+app.use(Express.json())
 
 app.use(router)
 

@@ -1,8 +1,8 @@
 {
-  "name": "ghorde-bot",
+  "name": "ghorde-api",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:sohamjaiswal/ghorde-bot.git",
+  "repository": "https://github.com/ghorde/ghorde-api.git",
   "author": "Soham Jaiswal <sohamjaiswal10@gmail.com>",
   "license": "MIT",
   "scripts": {
