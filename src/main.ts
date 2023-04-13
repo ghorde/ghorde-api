@@ -6,6 +6,7 @@ import * as dotenv from 'dotenv'
 import { connectDb } from "./helpers"
 import { configureLogger } from "./helpers"
 import { LevelWithSilent } from 'pino';
+import router from './routers'
 
 dotenv.config()
 export const mainLogger = configureLogger(pino, 'main', (process.env.LOGGER_LEVEL).toLowerCase() as LevelWithSilent)
@@ -15,6 +16,8 @@ export const { SURREAL_LOC, SURREAL_USER, SURREAL_PASS } = process.env
 export const db = connectDb(new Surreal(SURREAL_LOC), SURREAL_USER, SURREAL_PASS)
 
 const app = Express()
+
+app.use(router)
 
 app.get("/", (req, res) => {
     mainLogger.info("route was hit!")
