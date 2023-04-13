@@ -1,41 +1,50 @@
 import Surreal from 'surrealdb.js'
 import { mainLogger } from '../main';
 
+// <T> implements IServiceGeneric<T>
 export default class ServiceGeneric {
     db: Surreal
-    table: string
+    dbtable: string
     constructor(db: Surreal, table: string) {
         this.db = db
-        this.table = table
+        this.dbtable = table
     }
 
     private errorHandler(e: any) {
-        mainLogger.error(`❌ Error while performing DB op. \n ${e}`)
+        mainLogger.error(`❌ Error while performing DB op on ${this.dbtable} table/collection. \n${e}`)
     }
 
-    async select(id: string) {
-        let selected = this.db.select(`${this.table}:${id}`).catch((e) => {
+    public set currDb(db: Surreal) {
+        this.db = db
+    }
+
+    public get table() {
+        return this.table
+    }
+
+    public async select(id: string) {
+        let selected = this.db.select(`${this.dbtable}:${id}`).catch((e) => {
             this.errorHandler(e)
         })
         return selected
     }
 
-    async create(id: string, data?: Record<string, unknown>) {
-        let created = this.db.create(`${this.table}:${id}`, data).catch((e) => {
+    public async create(id: string, data?: any) {
+        let created = this.db.create(`${this.dbtable}:${id}`, data).catch((e) => {
             this.errorHandler(e)
         })
         return created
     }
 
-    async change(id: string, data: Record<string, unknown>) {
-        let updated = await this.db.change(`${this.table}:${id}`, data).catch((e) => {
+    public async change(id: string, data: any) {
+        let updated = await this.db.change(`${this.dbtable}:${id}`, data).catch((e) => {
             this.errorHandler(e)
         })
         return updated
     }
 
-    async delete(id: string) {
-        this.db.delete(`${this.table}:${id}`).catch((e) => {
+    public async delete(id: string) {
+        this.db.delete(`${this.dbtable}:${id}`).catch((e) => {
             this.errorHandler(e)
         })
     }

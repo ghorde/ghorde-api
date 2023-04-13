@@ -6,7 +6,7 @@
   "author": "Soham Jaiswal <sohamjaiswal10@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev ./src/main.ts"
+    "dev": "ts-node ./src/main.ts"
   },
   "dependencies": {
     "@types/node": "^18.15.11",
