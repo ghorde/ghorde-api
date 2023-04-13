@@ -3,8 +3,8 @@ const {default: Surreal} = require('surrealdb.js')
 import pino from "pino"
 import Express from "express"
 import * as dotenv from 'dotenv'
-import { connectDb } from "./helpers/connect-db"
-import { configureLogger } from "./helpers/configure-logger"
+import { connectDb } from "./helpers"
+import { configureLogger } from "./helpers"
 import { LevelWithSilent } from 'pino';
 
 dotenv.config()
