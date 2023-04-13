@@ -1,10 +1,13 @@
 const {default: Surreal} = require('surrealdb.js')
 
+import pino from "pino"
 import Express from "express"
 import * as dotenv from 'dotenv'
 import { connectDb } from "./helpers/connect-db"
+import { configureLogger } from "./helpers/configure-logger"
 
 dotenv.config()
+const logger = configureLogger(pino)
 
 export const { SURREAL_LOC, SURREAL_USER, SURREAL_PASS } = process.env
 
