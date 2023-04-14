@@ -7,7 +7,7 @@ export default class ErrorHandler {
     }
 
     private useTemplate(err: string) {
-        return `Err encountered at: ${this.handlerName}\n${err ?`Error Details: ${err}` : ''}`
+        return `Err encountered at: ${this.handlerName} \n${err ?`Error Details: ${err}` : ''}`
     }
 
     notFound(err?: string) {

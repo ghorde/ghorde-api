@@ -1,15 +1,10 @@
 import Surreal, { Result } from 'surrealdb.js'
-import { serviceLogger } from '@/main';
+import { serviceLogger } from '../../main';
 import { IServiceGeneric } from './service.generic.types';
-import ErrorGeneric from '@/common/error.generic';
+import ErrorGeneric from '../../common/error.generic';
 
 export default class ServiceGeneric<T> implements IServiceGeneric<T> {
-    private db: Surreal
-    public readonly dbtable: string
-    constructor(db: Surreal, table: string) {
-        this.db = db
-        this.dbtable = table
-    }
+    constructor(private db: Surreal, private dbtable: string){}
 
     private errorHandler(e: any) {
         const errMsg =  `❌ Error while performing DB op on ${this.dbtable} table/collection. \n${e}`
@@ -66,4 +61,12 @@ export default class ServiceGeneric<T> implements IServiceGeneric<T> {
         })) as ErrorGeneric | Result<T>[]
         return res
     }
-} // 69 line perfection
+
+    public async isThere(id: string) {
+        const dbres = (await this.db.query(`select * from ${this.dbtable} where id = ${this.dbtable}:${id}`))[0]
+        if ((dbres.result as Array<Result<T>>).length > 0) {
+            return true
+        }
+        return false
+    }
+}

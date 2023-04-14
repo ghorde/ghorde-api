@@ -1,14 +1,12 @@
 import { Router } from "express"
-import { setServerPrefix, getServerPrefix, checkServer, registerServer, checkServerExistence } from "../../controllers"
+import { createServer, readServer, updateServer, deleteServer, checkRequest, checkExistence, checkAvailability } from '../../controllers/server.controller';
 
 const router = Router()
 
-router.route("/")
-    .get(checkServerExistence)
-    .post(checkServer, registerServer)
-
-router.route("/prefix")
-    .get(checkServer, getServerPrefix)
-    .post(checkServer, setServerPrefix)
+router.route("/:serverId")
+    .post(checkAvailability, checkRequest, createServer)
+    .get(checkExistence, readServer)
+    .patch(checkExistence, checkRequest, updateServer)
+    .delete(checkExistence, deleteServer)
 
 export default router
