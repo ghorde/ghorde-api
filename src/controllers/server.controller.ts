@@ -14,11 +14,14 @@ export const checkServer = asyncHandler(async(req: Request ,res: Response) => {
 
 export const registerServer = asyncHandler(async(req: Request ,res: Response) => {
     const {id} = req.body
-    mainLogger.info(`id recieved: ${id}`)
-    const dbres = Server.service.create(id, {prefix: '!'})
-    mainLogger.info(dbres)
-    res.json(dbres)
-    return
+    if (id) {
+        mainLogger.info(`id recieved: ${id}`)
+        const dbres = Server.service.create(id, {prefix: '!'})
+        mainLogger.info(dbres)
+        res.json(dbres)
+        return
+    }
+    res.json()
 })
 
 export const setServerPrefix = asyncHandler(async(req: Request ,res: Response) => {
