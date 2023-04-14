@@ -1,10 +1,10 @@
 import { Router } from "express"
-import { setServerPrefix, getServerPrefix, checkServer } from "../../controllers"
-import { registerServer } from '../../controllers/server.controller';
+import { setServerPrefix, getServerPrefix, checkServer, registerServer, checkServerExistence } from "../../controllers"
 
 const router = Router()
 
 router.route("/")
+    .get(checkServerExistence)
     .post(checkServer, registerServer)
 
 router.route("/prefix")

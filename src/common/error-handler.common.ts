@@ -1,5 +1,5 @@
 import { errLogger } from '../main';
-import { IErrorGeneric } from './error.generic.types';
+import  ErrorGeneric from './error.generic';
 export default class ErrorHandler {
     readonly handlerName: string
     constructor(handlerName: string) {
@@ -11,26 +11,17 @@ export default class ErrorHandler {
     }
 
     notFound(err?: string) {
-        const error: IErrorGeneric = {
-            error: true,
-            errMsg: `❌ Not Found ${this.useTemplate(err)}`
-        }
+        const error = new ErrorGeneric(true, `❌ Not Found ${this.useTemplate(err)}`)
         errLogger.error(error.errMsg)
         return (error)
     }
     critical(err?: string) {
-        const error: IErrorGeneric = {
-            error: true,
-            errMsg: `❌ Critical ${this.useTemplate(err)}`
-        }
+        const error = new ErrorGeneric(true, `❌ Critical ${this.useTemplate(err)}`)
         errLogger.error(error.errMsg)
         return (error)
     }
     unhandled(err?: string) {
-        const error: IErrorGeneric = {
-            error: true,
-            errMsg: `❌ Unhandled ${this.useTemplate(err)}`
-        }
+        const error = new ErrorGeneric(true, `❌ Unhandled ${this.useTemplate(err)}`)
         errLogger.error(error.errMsg)
         return (error)
     }
