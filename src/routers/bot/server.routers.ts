@@ -5,11 +5,10 @@ import { registerServer } from '../../controllers/server.controller';
 const router = Router()
 
 router.route("/")
-    .get(checkServer)
-    .post(registerServer)
+    .post(checkServer, registerServer)
 
 router.route("/prefix")
-    .get(getServerPrefix)
-    .post(setServerPrefix)
+    .get(checkServer, getServerPrefix)
+    .post(checkServer, setServerPrefix)
 
 export default router

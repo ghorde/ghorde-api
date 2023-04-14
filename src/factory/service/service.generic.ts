@@ -3,10 +3,9 @@ import { mainLogger } from '../../main';
 import { IServiceGeneric } from './service.generic.types';
 import { IErrorGeneric } from '@/common/error.generic.types';
 
-// <T> implements IServiceGeneric<T>
 export default class ServiceGeneric<T> implements IServiceGeneric<T> {
-    db: Surreal
-    dbtable: string
+    private db: Surreal
+    private readonly dbtable: string
     constructor(db: Surreal, table: string) {
         this.db = db
         this.dbtable = table
@@ -55,5 +54,16 @@ export default class ServiceGeneric<T> implements IServiceGeneric<T> {
             return err
         }) as void | IErrorGeneric
         return deleted
+    }
+
+    public async advanced(query: string) {
+        mainLogger.warn(`⚠ Base Query used for table: ${this.dbtable} \n😕 It is not recommended that this method is used unless absolutely necessary due to SOC and layout of this app...`)
+        let res = await this.db.query(query, {
+            tb: this.dbtable
+        }).catch((e) => {
+            const err = this.errorHandler(e)
+            return err
+        }) as T | IErrorGeneric
+        return res
     }
 }
