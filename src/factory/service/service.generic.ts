@@ -1,5 +1,5 @@
 import Surreal from 'surrealdb.js'
-import { mainLogger } from '../../main';
+import { serviceLogger } from '@/main';
 import { IServiceGeneric } from './service.generic.types';
 import { IErrorGeneric } from '@/common/error.generic.types';
 
@@ -12,7 +12,7 @@ export default class ServiceGeneric<T> implements IServiceGeneric<T> {
     }
 
     private errorHandler(e: any) {
-        mainLogger.error(`❌ Error while performing DB op on ${this.dbtable} table/collection. \n${e}`)
+        serviceLogger.error(`❌ Error while performing DB op on ${this.dbtable} table/collection. \n${e}`)
         return {error: true}
     }
 
@@ -57,7 +57,7 @@ export default class ServiceGeneric<T> implements IServiceGeneric<T> {
     }
 
     public async advanced(query: string) {
-        mainLogger.warn(`⚠ Base Query used for table: ${this.dbtable} \n😕 It is not recommended that this method is used unless absolutely necessary due to SOC and layout of this app...`)
+        serviceLogger.warn(`⚠ Base Query used for table: ${this.dbtable} \n😕 It is not recommended that this method is used unless absolutely necessary due to SOC and layout of this app...`)
         let res = await this.db.query(query, {
             tb: this.dbtable
         }).catch((e) => {
@@ -66,4 +66,4 @@ export default class ServiceGeneric<T> implements IServiceGeneric<T> {
         }) as T | IErrorGeneric
         return res
     }
-}
+} // 69 line perfection

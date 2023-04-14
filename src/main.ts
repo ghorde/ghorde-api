@@ -10,6 +10,7 @@ import router from './routers'
 dotenv.config()
 export const mainLogger = configureLogger(pino, 'main', (process.env.LOGGER_LEVEL).toLowerCase() as LevelWithSilent)
 export const errLogger = configureLogger(pino, 'err', (process.env.LOGGER_LEVEL).toLowerCase() as LevelWithSilent)
+export const serviceLogger = configureLogger(pino, 'service', (process.env.LOGGER_LEVEL).toLowerCase() as LevelWithSilent)
 
 export const { SURREAL_LOC, SURREAL_USER, SURREAL_PASS } = process.env
 
