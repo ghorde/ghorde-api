@@ -1,8 +1,8 @@
 import Surreal from 'surrealdb.js'
 import { mainLogger } from '../main';
-import { ServerService } from '@/services';
+import { allServices } from '@/services';
 
-export const configureDb: (db: Surreal, db_user:string, db_pass: string, servicesList: string[]) => Promise<Surreal> = async(db, db_user, db_pass) => {
+export const configureDb: (db: Surreal, db_user:string, db_pass: string) => Promise<Surreal> = async(db, db_user, db_pass) => {
     try {
         console.log("Initializing database...");
         if (!db_user || !db_pass) {
@@ -12,13 +12,17 @@ export const configureDb: (db: Surreal, db_user:string, db_pass: string, service
             user: db_user,
             pass: db_pass
         }).then(() => {
-            console.log('Successfully signed in! 👀')
+            mainLogger.info('👀 Successfully signed in!')
         }).catch ((err) => {
-            throw new Error(`Could not sign in to db 🤕, ${err}`)
+            mainLogger.fatal(`🤕 Could not sign in to db, \n${err}`)
+            throw new Error()
         })
         await db.use('ghorde', 'ghorde')
-        ServerService.currDb = db
-        mainLogger.info(`✋Logged in Service: Server`)
+        allServices.forEach((Service) => {
+            Service.db = db
+            mainLogger.info(`✋ Logged in Service: ${Service.name}`)
+        })
+        
     } catch (err) {
         mainLogger.fatal(`❌ Fatal: exiting due to failiure in instancing critical services. \n${err}`);
         throw new Error("Fatal: exiting due to failiure in instancing critical services.")

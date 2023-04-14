@@ -9,11 +9,12 @@ import router from './routers'
 
 dotenv.config()
 export const mainLogger = configureLogger(pino, 'main', (process.env.LOGGER_LEVEL).toLowerCase() as LevelWithSilent)
+export const errLogger = configureLogger(pino, 'err', (process.env.LOGGER_LEVEL).toLowerCase() as LevelWithSilent)
 
 export const { SURREAL_LOC, SURREAL_USER, SURREAL_PASS } = process.env
 
 export const db = new Surreal(SURREAL_LOC)
-configureDb(db, SURREAL_USER, SURREAL_PASS, ['servers']) // instance db
+configureDb(db, SURREAL_USER, SURREAL_PASS) // instance db
 
 const app = Express()
 app.use(Express.json())

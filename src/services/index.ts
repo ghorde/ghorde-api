@@ -1,5 +1,8 @@
-import { db } from '@/main'
-import {default as ServiceGeneric} from './service.generic'
-// define services here
-export const ServerService = new ServiceGeneric(db, 'server')
-export default ServiceGeneric
+import { IServerDoc } from './server.service.types';
+import Service from '../factory/service/service';
+
+export const Server = new Service<IServerDoc>('server')
+
+// be sure to add any services you add to this list as 
+// it's used to log em in while configuring db
+export const allServices: Service<any>[] = [Server]
