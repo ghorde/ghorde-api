@@ -12,7 +12,7 @@ export const checkRequest = asyncHandler(async(req: Request ,res: Response, next
         await next()
         return
     }
-    res.json(ServerControllerErrorHandler.critical("Recieved request with invalid body."))
+    res.json(ServerControllerErrorHandler.badRequest("Recieved request with invalid body."))
     return
 })
 
@@ -21,7 +21,7 @@ export const checkExistence = asyncHandler(async(req: Request ,res: Response, ne
         await next()
         return
     }
-    res.json(ServerControllerErrorHandler.critical("Server does not exist!"))
+    res.json(ServerControllerErrorHandler.notFound("Server does not exist!"))
     return
 })
 
@@ -30,19 +30,15 @@ export const checkAvailability = asyncHandler(async(req: Request ,res: Response,
         await next()
         return
     }
-    res.json(ServerControllerErrorHandler.critical("Server already exists!"))
+    res.json(ServerControllerErrorHandler.conflict("Server already exists!"))
     return
 })
 
 export const createServer = asyncHandler(async(req: Request ,res: Response) => {
     const id = req.params.serverId
     const data = req.body
-    if (data) {
-        const dbres = await Server.service.create(id, data)
-        res.json(dbres)
-        return
-    }
-    res.json(ServerControllerErrorHandler.critical("Data not supplied."))
+    const dbres = await Server.service.create(id, data)
+    res.json(dbres)
     return
 })
 
@@ -56,12 +52,8 @@ export const readServer = asyncHandler(async(req: Request ,res: Response) => {
 export const updateServer = asyncHandler(async(req: Request ,res: Response) => {
     const id = req.params.serverId
     const data = req.body
-    if (data as Partial<IServerDoc>) {
-        const dbres = await Server.service.update(id, data)
-        res.json(dbres)
-        return
-    }
-    res.json(ServerControllerErrorHandler.critical("Data not supplied."))
+    const dbres = await Server.service.update(id, data)
+    res.json(dbres)
     return
 })
 
