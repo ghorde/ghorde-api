@@ -7,7 +7,7 @@ export default class ErrorHandler {
     }
 
     private useTemplate(err: string) {
-        return `Err encountered at: ${this.handlerName} ${err ?`Error Details: ${err}` : ''}`
+        return `Err encountered at: ${this.handlerName}. ${err ?`Error Details: ${err}` : ''}`
     }
 
     badRequest(err?: string) {

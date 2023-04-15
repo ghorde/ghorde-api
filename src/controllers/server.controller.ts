@@ -17,7 +17,7 @@ export const checkRequest = asyncHandler(async(req: Request ,res: Response, next
     return
 })
 
-export const checkExistence = asyncHandler(async(req: Request ,res: Response, next: NextFunction) => {
+export const checkExistence = asyncHandler(async(req: Request ,res: Response, next?: NextFunction) => {
     if (await Server.service.isThere(req.params.serverId)) {
         await next()
         return
@@ -26,12 +26,24 @@ export const checkExistence = asyncHandler(async(req: Request ,res: Response, ne
     return
 })
 
-export const checkAvailability = asyncHandler(async(req: Request ,res: Response, next: NextFunction) => {
+export const checkAvailability = asyncHandler(async(req: Request ,res: Response, next?: NextFunction) => {
     if (!(await Server.service.isThere(req.params.serverId))) {
         await next()
         return
     }
     res.json(ServerControllerErrorHandler.conflict("Server already exists!"))
+    return
+})
+
+export const checkAvailabilityRoute = asyncHandler(async(req: Request ,res: Response) => {
+    const availability = !(await Server.service.isThere(req.params.serverId))
+    res.json(ServerControllerSuccessHandler.ok(availability))
+    return
+})
+
+export const checkExistenceRoute = asyncHandler(async(req: Request ,res: Response) => {
+    const existence = await Server.service.isThere(req.params.serverId)
+    res.json(ServerControllerSuccessHandler.ok(existence))
     return
 })
 
