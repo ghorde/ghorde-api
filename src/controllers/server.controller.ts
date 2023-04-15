@@ -1,37 +1,78 @@
 import asyncHandler from "express-async-handler"
-import {Request, Response} from "express"
-import { mainLogger } from '@/main';
-import { Server } from "@/services";
+import {Request, Response, NextFunction} from "express"
+import { Server } from "../services";
+import ErrorHandler from "../common/error-handler.common";
+import { isServerDoc } from "../services/server.service";
+import SuccessHandler from "../common/success-handler.common";
 
-export const checkServer = asyncHandler(async(req: Request ,res: Response) => {
-    const {id} = req.body
-    mainLogger.info(`id recieved: ${id}`)
-    const dbres = Server.service.read(id)
-    mainLogger.info(dbres)
-    res.json(dbres)
-    return
-})
+const ServerControllerErrorHandler = new ErrorHandler('Server Controller')
+const ServerControllerSuccessHandler = new SuccessHandler('Server Controller')
 
-export const registerServer = asyncHandler(async(req: Request ,res: Response) => {
-    const {id} = req.body
-    if (id) {
-        mainLogger.info(`id recieved: ${id}`)
-        const dbres = Server.service.create(id, {prefix: '!'})
-        mainLogger.info(dbres)
-        res.json(dbres)
+export const checkRequest = asyncHandler(async(req: Request ,res: Response, next: NextFunction) => {
+    if (isServerDoc(req.body)) {
+        await next()
         return
     }
-    res.json()
-})
-
-export const setServerPrefix = asyncHandler(async(req: Request ,res: Response) => {
-    mainLogger.info("setServerPrefix Hit!")
-    res.json({})
+    res.json(ServerControllerErrorHandler.badRequest("Recieved request with invalid body."))
     return
 })
 
-export const getServerPrefix = asyncHandler(async(req: Request ,res: Response) => {
-    mainLogger.info("getServerPrefix Hit!")
-    res.json({})
+export const checkExistence = asyncHandler(async(req: Request ,res: Response, next?: NextFunction) => {
+    if (await Server.service.isThere(req.params.serverId)) {
+        await next()
+        return
+    }
+    res.json(ServerControllerErrorHandler.notFound("Server does not exist!"))
+    return
+})
+
+export const checkAvailability = asyncHandler(async(req: Request ,res: Response, next?: NextFunction) => {
+    if (!(await Server.service.isThere(req.params.serverId))) {
+        await next()
+        return
+    }
+    res.json(ServerControllerErrorHandler.conflict("Server already exists!"))
+    return
+})
+
+export const checkAvailabilityRoute = asyncHandler(async(req: Request ,res: Response) => {
+    const availability = !(await Server.service.isThere(req.params.serverId))
+    res.json(ServerControllerSuccessHandler.ok(availability))
+    return
+})
+
+export const checkExistenceRoute = asyncHandler(async(req: Request ,res: Response) => {
+    const existence = await Server.service.isThere(req.params.serverId)
+    res.json(ServerControllerSuccessHandler.ok(existence))
+    return
+})
+
+export const createServer = asyncHandler(async(req: Request ,res: Response) => {
+    const id = req.params.serverId
+    const data = req.body
+    const dbres = await Server.service.create(id, data)
+    res.json(ServerControllerSuccessHandler.created(dbres))
+    return
+})
+
+export const readServer = asyncHandler(async(req: Request ,res: Response) => {
+    const id = req.params.serverId
+    const dbres = await Server.service.read(id)
+    res.json(ServerControllerSuccessHandler.ok(dbres))
+    return
+})
+
+export const updateServer = asyncHandler(async(req: Request ,res: Response) => {
+    const id = req.params.serverId
+    const data = req.body
+    const dbres = await Server.service.update(id, data)
+    res.json(ServerControllerSuccessHandler.accepted(dbres))
+    return
+})
+
+export const deleteServer = asyncHandler(async(req: Request ,res: Response) => {
+    const id = req.params.serverId
+    const dbres = await Server.service.delete(id)
+    res.json(ServerControllerSuccessHandler.noContent(dbres))
     return
 })

@@ -1,6 +1,6 @@
 import Surreal from 'surrealdb.js'
 import { mainLogger } from '../main';
-import { allServices } from '@/services';
+import { allServices } from '../services';
 
 export const configureDb: (db: Surreal, db_user:string, db_pass: string) => Promise<Surreal> = async(db, db_user, db_pass) => {
     try {

@@ -1,15 +1,15 @@
 import { Router } from "express"
-import { setServerPrefix, getServerPrefix, checkServer } from "../../controllers"
-import { registerServer } from '../../controllers/server.controller';
+import { createServer, readServer, updateServer, deleteServer, checkRequest, checkExistence, checkAvailability, checkAvailabilityRoute, checkExistenceRoute } from '../../controllers/server.controller';
 
 const router = Router()
 
-router.route("/")
-    .get(checkServer)
-    .post(registerServer)
-
-router.route("/prefix")
-    .get(getServerPrefix)
-    .post(setServerPrefix)
+router.route("/check/:serverId")
+    .post(checkAvailabilityRoute)
+    .get(checkExistenceRoute)
+router.route("/:serverId")
+    .post(checkAvailability, checkRequest, createServer)
+    .get(checkExistence, readServer)
+    .patch(checkExistence, checkRequest, updateServer)
+    .delete(checkExistence, deleteServer)
 
 export default router

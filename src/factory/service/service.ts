@@ -1,7 +1,6 @@
 import Surreal from 'surrealdb.js';
 import ServiceGeneric from './service.generic';
 import { IService } from './service.types';
-import { db } from '@/main';
 export default class Service<T> implements IService<T> {
     readonly name: string
     private currDb: Surreal
@@ -12,5 +11,6 @@ export default class Service<T> implements IService<T> {
     }
     set db(db: Surreal) {
         this.currDb = db
+        this.service.changeDb = db
     }
 }

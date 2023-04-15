@@ -1,4 +1,4 @@
-import { IServerDoc } from './server.service.types';
+import { IServerDoc } from './server.service';
 import Service from '../factory/service/service';
 
 export const Server = new Service<IServerDoc>('server')
