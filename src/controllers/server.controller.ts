@@ -1,11 +1,12 @@
 import asyncHandler from "express-async-handler"
 import {Request, Response, NextFunction} from "express"
-import { mainLogger } from '../main';
 import { Server } from "../services";
 import ErrorHandler from "../common/error-handler.common";
-import { IServerDoc, isServerDoc } from "../services/server.service";
+import { isServerDoc } from "../services/server.service";
+import SuccessHandler from "../common/success-handler.common";
 
 const ServerControllerErrorHandler = new ErrorHandler('Server Controller')
+const ServerControllerSuccessHandler = new SuccessHandler('Server Controller')
 
 export const checkRequest = asyncHandler(async(req: Request ,res: Response, next: NextFunction) => {
     if (isServerDoc(req.body)) {
@@ -38,14 +39,14 @@ export const createServer = asyncHandler(async(req: Request ,res: Response) => {
     const id = req.params.serverId
     const data = req.body
     const dbres = await Server.service.create(id, data)
-    res.json(dbres)
+    res.json(ServerControllerSuccessHandler.created(dbres))
     return
 })
 
 export const readServer = asyncHandler(async(req: Request ,res: Response) => {
     const id = req.params.serverId
     const dbres = await Server.service.read(id)
-    res.json(dbres)
+    res.json(ServerControllerSuccessHandler.ok(dbres))
     return
 })
 
@@ -53,13 +54,13 @@ export const updateServer = asyncHandler(async(req: Request ,res: Response) => {
     const id = req.params.serverId
     const data = req.body
     const dbres = await Server.service.update(id, data)
-    res.json(dbres)
+    res.json(ServerControllerSuccessHandler.accepted(dbres))
     return
 })
 
 export const deleteServer = asyncHandler(async(req: Request ,res: Response) => {
     const id = req.params.serverId
     const dbres = await Server.service.delete(id)
-    res.json(dbres)
+    res.json(ServerControllerSuccessHandler.noContent(dbres))
     return
 })
