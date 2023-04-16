@@ -14,7 +14,7 @@ export const getRandomImage = async (req: Request, res: Response) => {
         const imageLink = await axios.get('https://api.unsplash.com/photos/random', {headers: {Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}`}}) 
         const create = {
             imgLink: imageLink.data.urls.regular,
-            owner: id,
+            owner: id.toString(),
             time: Date.now()
         }
         const dbres = await Image.service.create(create)
@@ -32,7 +32,7 @@ export const getRandomImage = async (req: Request, res: Response) => {
 export const getUserImages = async (req: Request, res: Response) => {
     const {userId} = req.params
     if (userId) {
-        const dbres = await Image.service.find({owner: userId})
+        const dbres = await Image.service.find({owner: `"${userId}"`})
         if (isError(dbres)) {
             res.json(ImageControllerErrorHandler.internal(dbres.errMsg))
             return
