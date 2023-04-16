@@ -29,8 +29,8 @@ export default class ServiceGeneric<T> implements IServiceGeneric<T> {
         return selected
     }
 
-    public async create(id: string, data: T) {
-        let created = (await this.db.create(`${this.dbtable}:${id}`, data as Record<string, unknown>).catch((e) => {
+    public async create(data: T, id?: string) {
+        let created = (await this.db.create(`${this.dbtable}${id ? `:${id}` : ''}`, data as Record<string, unknown>).catch((e) => {
             const err = this.errorHandler(e, 500)
             return err
         })) as Result<T> | ErrorGeneric
@@ -66,12 +66,33 @@ export default class ServiceGeneric<T> implements IServiceGeneric<T> {
     public async isThere(id: string) {
         const dbres = (await this.db.query(`select * from ${this.dbtable} where id = ${this.dbtable}:${id}`).catch((e) => {
             const err = this.errorHandler(e, 500)
-            throw new Error()
             return [err]
         }))[0]
         if ( !(isError(dbres)) && (dbres.result as Array<Result<T>>).length > 0) {
             return true
         }
         return false
+    }
+
+    public async find(data: Omit<Partial<T>, "id">) {
+        let query = ""
+        Object.keys(data).forEach((key, i) => {
+            if (data[key] === undefined) {
+                delete data[key]
+                return
+            }
+            if (i > 0) {
+                query += " and "
+            }
+            query += `${key} = ${data[key]}`
+        })
+        const dbres = (await this.db.query<T>(`select * from ${this.dbtable} where ${query}`).catch((e) => {
+            const err = this.errorHandler(e, 500)
+            return [err]
+        }))[0] as Result<T> | ErrorGeneric
+        if ( !(isError(dbres)) && (dbres.result as Array<Result<T>>).length > 0) {
+            return dbres.result as Result<T>
+        }
+        return dbres
     }
 }
