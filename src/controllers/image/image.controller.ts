@@ -28,3 +28,18 @@ export const getRandomImage = async (req: Request, res: Response) => {
     res.json(ImageControllerErrorHandler.badRequest('No id provided'))
     return
 }
+
+export const getUserImages = async (req: Request, res: Response) => {
+    const {userId} = req.params
+    if (userId) {
+        const dbres = await Image.service.find({owner: userId})
+        if (isError(dbres)) {
+            res.json(ImageControllerErrorHandler.internal(dbres.errMsg))
+            return
+        }
+        res.json(ImageControllerSuccessHandler.ok(dbres))
+        return
+    }
+    res.json(ImageControllerErrorHandler.badRequest('No user id provided'))
+    return
+}
