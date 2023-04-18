@@ -8,14 +8,6 @@ router.route("/random")
 
 router.route("/user/:userId")
     .get(getUserImages)
-// router.route("/prompt/:promptId")
-//     .post(createImageWithPrompt)
-
-// router.route("/user/:userId")
-//     .get(getUserImages)
-
-// router.route("/:imageId")
-//     .get(getImage)
     
 
 export default router
