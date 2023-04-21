@@ -21,11 +21,12 @@ const AiHorde = new AIHorde({
 });
 
 export const shGenerate = async (req: Request, res: Response) => {
-  const { prompt, userId } = req.body;
+  const { prompt, model } = req.body;
   if (prompt) {
     // start the generation of an image with the given payload
     const { id } = await AiHorde.postAsyncImageGenerate({
       prompt,
+      models: [model || "stable_diffusion"]
     });
     res.json({ id });
     return;
