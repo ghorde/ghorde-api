@@ -1,4 +1,4 @@
 export interface IResponseGeneric {
-    success: boolean
-    status: number
+  success: boolean;
+  status: number;
 }

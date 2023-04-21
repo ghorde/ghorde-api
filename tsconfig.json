@@ -10,9 +10,9 @@
 		"baseUrl": "src/",
 		"downlevelIteration": true,
 		"resolveJsonModule": true,
-		// "paths": {
-		// 	"@/*": ["./*"]
-		// },
+		"paths": {
+			"@/*": ["./*"]
+		},
 		"esModuleInterop": true,
 		"typeRoots": ["./@types", "./node_modules/@types"]
 	},

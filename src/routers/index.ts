@@ -1,9 +1,9 @@
-import {Router} from 'express'
+import { Router } from "express";
 
-import {default as bot} from './bot'
+import { default as bot } from "./bot";
 
-const router = Router()
+const router = Router();
 
-router.use('/bot', bot)
+router.use("/bot", bot);
 
-export default router
+export default router;

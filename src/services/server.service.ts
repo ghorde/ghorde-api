@@ -1,7 +1,7 @@
 export class ServerDoc {
-    prefix?: string
+  prefix?: string;
 }
 
 export function isServerDoc(arg: any): arg is ServerDoc {
-    return arg && arg.prefix && typeof(arg.prefix) == 'string'
+  return arg && arg.prefix && typeof arg.prefix == "string";
 }
