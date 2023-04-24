@@ -10,7 +10,7 @@ export interface IGetToken {
   scope: string;
 }
 
-export class Authlink {
+class Authlink {
   private _baseurl: string;
   private _axios: AxiosInstance;
   constructor() {
@@ -83,3 +83,5 @@ export class Authlink {
     return response.data;
   }
 }
+
+export default new Authlink();

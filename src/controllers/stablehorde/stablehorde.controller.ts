@@ -6,6 +6,7 @@ import { isError } from "../../common/error.generic";
 import { Request, Response } from "express";
 
 import AIHorde from "@zeldafan0225/ai_horde";
+import { mainLogger } from "@/main";
 
 const AiHordeControllerErrorHandler = new ErrorHandler("AiHorde Controller");
 const AiHordeControllerSuccessHandler = new SuccessHandler(
@@ -24,10 +25,12 @@ export const shGenerate = async (req: Request, res: Response) => {
   const { prompt, model } = req.body;
   if (prompt) {
     // start the generation of an image with the given payload
-    const { id } = await AiHorde.postAsyncImageGenerate({
+    const data = await AiHorde.postAsyncImageGenerate({
       prompt,
       models: [model || "stable_diffusion"],
     });
+    mainLogger.info(data)
+    const {id} = data;
     res.json({ id });
     return;
   }
