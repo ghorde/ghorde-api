@@ -42,6 +42,7 @@ export const shCheck = async (req: Request, res: Response) => {
   const { id } = req.params;
   if (id) {
     const check = await AiHorde.getImageGenerationCheck(id);
+    mainLogger.info(check)
     res.json(check);
     return;
   }
