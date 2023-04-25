@@ -45,7 +45,7 @@ app.use(Express.json());
 app.use(router);
 
 app.listen(process.env.PORT, () => {
-  console.log(`Server started on port ${process.env.PORT}`);
+  mainLogger.info(`🐱‍👤 HTTP server started on port ${process.env.PORT}`);
 });
 
-https.createServer(options, app).listen(443);
+https.createServer(options, app).listen(443, () => mainLogger.info('💂‍♂️ HTTPS Server started on port 443'));
