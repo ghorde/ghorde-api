@@ -29,8 +29,8 @@ export const shGenerate = async (req: Request, res: Response) => {
       prompt,
       models: [model || "stable_diffusion"],
     });
-    mainLogger.info(data)
-    const {id} = data;
+    mainLogger.info(data);
+    const { id } = data;
     res.json({ id });
     return;
   }
@@ -42,7 +42,7 @@ export const shCheck = async (req: Request, res: Response) => {
   const { id } = req.params;
   if (id) {
     const check = await AiHorde.getImageGenerationCheck(id);
-    mainLogger.info(check)
+    mainLogger.info(check);
     res.json(check);
     return;
   }

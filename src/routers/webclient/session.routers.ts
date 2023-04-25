@@ -1,9 +1,13 @@
-import {Router} from "express";
+import {
+  issueToken,
+  revokeToken,
+} from "../../controllers/login/login.controller";
+import { Router } from "express";
 
 const router = Router();
 
-router.route("/login/:code")
-  .get(handleCodeLogin);
+router.route("/exchangeToken").post(issueToken);
 
+router.route("/revokeToken").post(revokeToken);
 
 export default router;

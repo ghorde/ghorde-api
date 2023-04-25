@@ -9,7 +9,6 @@ import router from "./routers";
 import { httpser } from "./middleware/httpser.middleware";
 import path from "path";
 
-
 dotenv.config();
 export const mainLogger = configureLogger(
   pino,
@@ -34,7 +33,7 @@ configureDb(db, SURREAL_USER, SURREAL_PASS); // instance db
 const app = Express();
 app.use(Express.json());
 app.use(httpser);
-app.use(Express.static(path.join(__dirname, 'public')));
+app.use(Express.static(path.join(__dirname, "public")));
 app.use(router);
 
 app.listen(process.env.PORT, () => {
