@@ -6,7 +6,7 @@ import { Router } from "express";
 
 const router = Router();
 
-router.route("/exchangeToken").post(issueToken);
+router.route("/issueToken").post(issueToken);
 
 router.route("/revokeToken").post(revokeToken);
 
