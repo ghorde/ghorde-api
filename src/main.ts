@@ -42,6 +42,7 @@ configureDb(db, SURREAL_USER, SURREAL_PASS); // instance db
 const app = Express();
 app.use(Express.json());
 // app.use(httpser) not necessary rn
+app.use(Express.static(path.join(__dirname, 'public')));
 app.use(router);
 
 app.listen(process.env.PORT, () => {
