@@ -10,10 +10,12 @@ import https from 'https'
 import fs from 'fs'
 import { httpser } from "./middleware/httpser.middleware";
 import path from "path";
+import { pem_passphrase } from "./config";
 
 const options = {
   key: fs.readFileSync(path.resolve('key.pem')),
-  cert: fs.readFileSync(path.resolve('cert.pem'))
+  cert: fs.readFileSync(path.resolve('cert.pem')),
+  passphrase: pem_passphrase
 }
 
 dotenv.config();
