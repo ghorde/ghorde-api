@@ -6,7 +6,7 @@ import { isError } from "../../common/error.generic";
 import { Request, Response } from "express";
 
 import AIHorde from "@zeldafan0225/ai_horde";
-import { mainLogger } from "@/main";
+import { mainLogger } from "../../main";
 
 const AiHordeControllerErrorHandler = new ErrorHandler("AiHorde Controller");
 const AiHordeControllerSuccessHandler = new SuccessHandler(

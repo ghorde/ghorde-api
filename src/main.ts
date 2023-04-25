@@ -9,10 +9,11 @@ import router from "./routers";
 import https from 'https'
 import fs from 'fs'
 import { httpser } from "./middleware/httpser.middleware";
+import path from "path";
 
 const options = {
-  key: fs.readFileSync('../key.pem'),
-  cert: fs.readFileSync('../cert.pem')
+  key: fs.readFileSync(path.resolve('key.pem')),
+  cert: fs.readFileSync(path.resolve('cert.pem'))
 }
 
 dotenv.config();
