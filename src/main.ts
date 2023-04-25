@@ -6,17 +6,17 @@ import * as dotenv from "dotenv";
 import { configureDb, configureLogger } from "./helpers";
 import { LevelWithSilent } from "pino";
 import router from "./routers";
-import https from 'https'
-import fs from 'fs'
+// import https from 'https'
+// import fs from 'fs'
 import { httpser } from "./middleware/httpser.middleware";
 import path from "path";
-import { pem_passphrase } from "./config";
+// import { pem_passphrase } from "./config";
 
-const options = {
-  key: fs.readFileSync(path.resolve('key.pem')),
-  cert: fs.readFileSync(path.resolve('cert.pem')),
-  passphrase: pem_passphrase
-}
+// const options = {
+//   key: fs.readFileSync(path.resolve('key.pem')),
+//   cert: fs.readFileSync(path.resolve('cert.pem')),
+//   passphrase: pem_passphrase
+// }
 
 dotenv.config();
 export const mainLogger = configureLogger(
@@ -48,5 +48,3 @@ app.use(router);
 app.listen(process.env.PORT, () => {
   mainLogger.info(`🐱‍👤 HTTP server started on port ${process.env.PORT}`);
 });
-
-https.createServer(options, app).listen(443, () => mainLogger.info('💂‍♂️ HTTPS Server started on port 443'));
