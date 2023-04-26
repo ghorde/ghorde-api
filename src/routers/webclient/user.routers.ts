@@ -4,13 +4,13 @@ import { Router } from "express";
 
 const router = Router();
 
-router.route("/userInfo")
+router.route("/info")
   .post(getUser)
 
-router.route("/userGuilds")
+router.route("/guilds")
   .post(getUserGuilds)
 
-router.route("/userInGuild")
+router.route("/guild")
   .post(getUserInGuild)
 
 export default router;

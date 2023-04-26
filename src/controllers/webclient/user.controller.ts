@@ -17,7 +17,7 @@ export const getUser = asyncHandler(async (req: Request, res: Response) => {
   const user =
     await Authlink.getUserInfo(code);
   res.json(
-    UserControllerSuccessHandler.created(user)
+    UserControllerSuccessHandler.ok(user)
   );
   return;
 });
@@ -31,7 +31,7 @@ export const getUserGuilds = asyncHandler(async (req: Request, res: Response) =>
   const user =
     await Authlink.getGuilds(code);
   res.json(
-    UserControllerSuccessHandler.created(user)
+    UserControllerSuccessHandler.ok(user)
   );
   return;
 });
@@ -45,7 +45,7 @@ export const getUserInGuild = asyncHandler(async (req: Request, res: Response) =
   const user =
     await Authlink.getUserInGuild(code, guildId);
   res.json(
-    UserControllerSuccessHandler.created(user)
+    UserControllerSuccessHandler.ok(user)
   );
   return;
 });
