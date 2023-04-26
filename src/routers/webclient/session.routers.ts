@@ -7,9 +7,6 @@ import { Router } from "express";
 
 const router = Router();
 
-router.route("/token")
-  .post(issueToken)
-  .delete(revokeToken)
-  .patch(refreshToken);
+router.route("/token").post(issueToken).delete(revokeToken).patch(refreshToken);
 
 export default router;

@@ -14,38 +14,33 @@ export const getUser = asyncHandler(async (req: Request, res: Response) => {
     res.json(UserControllerErrorHandler.badRequest("Missing code."));
     return;
   }
-  const user =
-    await Authlink.getUserInfo(code);
-  res.json(
-    UserControllerSuccessHandler.ok(user)
-  );
+  const user = await Authlink.getUserInfo(code);
+  res.json(UserControllerSuccessHandler.ok(user));
   return;
 });
 
-export const getUserGuilds = asyncHandler(async (req: Request, res: Response) => {
-  const { code } = req.body;
-  if (!code) {
-    res.json(UserControllerErrorHandler.badRequest("Missing code."));
+export const getUserGuilds = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { code } = req.body;
+    if (!code) {
+      res.json(UserControllerErrorHandler.badRequest("Missing code."));
+      return;
+    }
+    const user = await Authlink.getGuilds(code);
+    res.json(UserControllerSuccessHandler.ok(user));
     return;
   }
-  const user =
-    await Authlink.getGuilds(code);
-  res.json(
-    UserControllerSuccessHandler.ok(user)
-  );
-  return;
-});
+);
 
-export const getUserInGuild = asyncHandler(async (req: Request, res: Response) => {
-  const { code, guildId } = req.body;
-  if (!(code && guildId)) {
-    res.json(UserControllerErrorHandler.badRequest("Missing code."));
+export const getUserInGuild = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { code, guildId } = req.body;
+    if (!(code && guildId)) {
+      res.json(UserControllerErrorHandler.badRequest("Missing code."));
+      return;
+    }
+    const user = await Authlink.getUserInGuild(code, guildId);
+    res.json(UserControllerSuccessHandler.ok(user));
     return;
   }
-  const user =
-    await Authlink.getUserInGuild(code, guildId);
-  res.json(
-    UserControllerSuccessHandler.ok(user)
-  );
-  return;
-});
+);
