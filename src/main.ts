@@ -8,6 +8,8 @@ import { LevelWithSilent } from "pino";
 import router from "./routers";
 import { httpser } from "./middleware/httpser.middleware";
 import path from "path";
+import cors from "cors";
+import { corsConfig } from "./middleware/cors";
 
 dotenv.config();
 export const mainLogger = configureLogger(
@@ -26,12 +28,14 @@ export const serviceLogger = configureLogger(
   process.env.LOGGER_LEVEL.toLowerCase() as LevelWithSilent
 );
 
-export const { SURREAL_LOC, SURREAL_USER, SURREAL_PASS } = process.env;
+export const { SURREAL_LOC, SURREAL_USER, SURREAL_PASS, ORIGINS } = process.env;
+export const originsList = ORIGINS.split(",");
 export const db = new Surreal(SURREAL_LOC);
 configureDb(db, SURREAL_USER, SURREAL_PASS); // instance db
 
 const app = Express();
 app.use(Express.json());
+app.use(cors(corsConfig));
 // app.use(httpser);
 app.use(Express.static(path.join(__dirname, "public")));
 app.use(router);
