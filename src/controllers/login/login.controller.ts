@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { Authlink } from "../../services";
 import ErrorHandler from "../../common/error-handler.common";
 import SuccessHandler from "../../common/success-handler.common";
-import { mainLogger } from "@/main";
+import { mainLogger } from "../../main";
 
 const AuthlinkCrudErrorHandler = new ErrorHandler("Authlink Crud");
 const AuthlinkCrudSuccessHandler = new SuccessHandler("Authlink Crud");
