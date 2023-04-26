@@ -22,13 +22,13 @@ const AiHorde = new AIHorde({
 });
 
 export const shGenerate = async (req: Request, res: Response) => {
-  const { prompt, model } = req.body;
+  const { prompt, model, token } = req.body;
   if (prompt) {
     // start the generation of an image with the given payload
     const data = await AiHorde.postAsyncImageGenerate({
       prompt,
       models: [model || "stable_diffusion"],
-    });
+    }, {token: token ? token : undefined});
     mainLogger.info(data);
     const { id } = data;
     res.json({ id });
