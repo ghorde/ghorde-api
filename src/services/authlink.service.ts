@@ -42,7 +42,7 @@ class Authlink {
   }
   public async revokeToken(token: string): Promise<void> {
     await this._axios.post(
-      "revoke",
+      "token/revoke",
       new URLSearchParams({ token, client_id, client_secret })
     );
     return;
