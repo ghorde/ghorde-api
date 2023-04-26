@@ -40,10 +40,10 @@ class Authlink {
     );
     return response.data;
   }
-  public async revokeToken(refresh_token: string): Promise<void> {
+  public async revokeToken(token: string): Promise<void> {
     await this._axios.post(
       "revoke",
-      new URLSearchParams({ refresh_token, client_id, client_secret })
+      new URLSearchParams({ token, client_id, client_secret })
     );
     return;
   }
