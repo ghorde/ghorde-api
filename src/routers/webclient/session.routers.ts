@@ -2,7 +2,7 @@ import {
   issueToken,
   refreshToken,
   revokeToken,
-} from "../../controllers/login/login.controller";
+} from "../../controllers/webclient/login.controller";
 import { Router } from "express";
 
 const router = Router();
