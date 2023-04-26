@@ -28,7 +28,7 @@ export const shGenerate = async (req: Request, res: Response) => {
     const data = await AiHorde.postAsyncImageGenerate({
       prompt,
       models: [model || "stable_diffusion"],
-    }, {token: token ? token : undefined});
+    }, {token: token || "0000000000"});
     mainLogger.info(data);
     const { id } = data;
     res.json({ id });
