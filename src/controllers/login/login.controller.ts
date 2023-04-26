@@ -30,7 +30,7 @@ export const issueToken = asyncHandler(async (req: Request, res: Response) => {
 export const refreshToken = asyncHandler(async (req: Request, res: Response) => {
   const { code } = req.body;
   if (!code) {
-    res.json(AuthlinkCrudErrorHandler.badRequest("Missing refresh token."));
+    res.json(AuthlinkCrudErrorHandler.badRequest("Missing code: refresh token."));
     return;
   }
   const { access_token, expires_in, refresh_token } =
@@ -50,7 +50,7 @@ export const revokeToken = asyncHandler(async (req: Request, res: Response) => {
   const { code } = req.body;
   mainLogger.info(`Revoke token: ${code}`)
   if (!code) {
-    res.json(AuthlinkCrudErrorHandler.badRequest("Missing access token."));
+    res.json(AuthlinkCrudErrorHandler.badRequest("Missing code: access token."));
     return;
   }
   await Authlink.revokeToken(code);
