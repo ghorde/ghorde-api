@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { Authlink } from "../../services";
 import ErrorHandler from "../../common/error-handler.common";
 import SuccessHandler from "../../common/success-handler.common";
+import { mainLogger } from "@/main";
 
 const AuthlinkCrudErrorHandler = new ErrorHandler("Authlink Crud");
 const AuthlinkCrudSuccessHandler = new SuccessHandler("Authlink Crud");
@@ -16,7 +17,26 @@ export const issueToken = asyncHandler(async (req: Request, res: Response) => {
   const { access_token, expires_in, refresh_token } =
     await Authlink.exchangeInitialToken(code);
   res.json(
-    AuthlinkCrudSuccessHandler.ok({
+    AuthlinkCrudSuccessHandler.created({
+      access_token,
+      expires_in,
+      refresh_token,
+      issue_time: Date.now(),
+    })
+  );
+  return;
+});
+
+export const refreshToken = asyncHandler(async (req: Request, res: Response) => {
+  const { code } = req.body;
+  if (!code) {
+    res.json(AuthlinkCrudErrorHandler.badRequest("Missing code"));
+    return;
+  }
+  const { access_token, expires_in, refresh_token } =
+    await Authlink.refreshToken(code);
+  res.json(
+    AuthlinkCrudSuccessHandler.accepted({
       access_token,
       expires_in,
       refresh_token,
@@ -27,12 +47,13 @@ export const issueToken = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const revokeToken = asyncHandler(async (req: Request, res: Response) => {
-  const { access_token } = req.body;
-  if (!access_token) {
+  const { code } = req.body;
+  mainLogger.info(`Revoke token: ${code}`)
+  if (!code) {
     res.json(AuthlinkCrudErrorHandler.badRequest("Missing code"));
     return;
   }
-  await Authlink.revokeToken(access_token);
+  await Authlink.revokeToken(code);
   res.json(AuthlinkCrudSuccessHandler.ok({}));
   return;
 });
