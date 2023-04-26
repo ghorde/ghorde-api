@@ -1,13 +1,15 @@
 import {
   issueToken,
+  refreshToken,
   revokeToken,
 } from "../../controllers/login/login.controller";
 import { Router } from "express";
 
 const router = Router();
 
-router.route("/issueToken").post(issueToken);
-
-router.route("/revokeToken").post(revokeToken);
+router.route("/token")
+  .post(issueToken)
+  .delete(revokeToken)
+  .patch(refreshToken);
 
 export default router;
