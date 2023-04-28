@@ -29,8 +29,8 @@ export const serviceLogger = configureLogger(
 );
 
 export const { SURREAL_LOC, SURREAL_USER, SURREAL_PASS, ORIGINS } = process.env;
-export const originsList = ORIGINS.split(",");
-mainLogger.info(`👪 Origins: ${originsList}`);
+export const originsList = ORIGINS.split(", ");
+mainLogger.info(`👪 Origins: ${typeof originsList} ${originsList}`);
 export const db = new Surreal(SURREAL_LOC);
 configureDb(db, SURREAL_USER, SURREAL_PASS); // instance db
 
