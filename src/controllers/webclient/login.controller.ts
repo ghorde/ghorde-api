@@ -21,7 +21,7 @@ export const issueToken = asyncHandler(async (req: Request, res: Response) => {
       access_token,
       expires_in,
       refresh_token,
-      issue_time: Date.now(),
+      issue_time: Math.floor(Date.now()/1000),
     })
   );
   return;
@@ -43,7 +43,7 @@ export const refreshToken = asyncHandler(
         access_token,
         expires_in,
         refresh_token,
-        issue_time: Date.now(),
+        issue_time: Math.floor(Date.now()/1000),
       })
     );
     return;
