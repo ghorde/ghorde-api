@@ -35,7 +35,7 @@ configureDb(db, SURREAL_USER, SURREAL_PASS); // instance db
 
 const app = Express();
 app.use(Express.json());
-app.use(cors(corsConfig));
+// app.use(cors(corsConfig));
 // app.use(httpser);
 app.use(Express.static(path.join(__dirname, "public")));
 app.use(router);
