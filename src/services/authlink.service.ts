@@ -14,7 +14,7 @@ class Authlink {
   private _baseurl: string;
   private _axios: AxiosInstance;
   constructor() {
-    this._baseurl = "https://authlink.guildedapi.com/api/v1/";
+    this._baseurl = "http://ghorde-authlink.kodski.com/api/v1/";
     this._axios = axios.create({ baseURL: this._baseurl });
   }
 
