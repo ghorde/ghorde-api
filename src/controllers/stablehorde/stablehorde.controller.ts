@@ -22,7 +22,7 @@ const AiHorde = new AIHorde({
 });
 
 export const shGenerate = async (req: Request, res: Response) => {
-  const { prompt, model, token, height, width } = req.body;
+  const { prompt, model, token, height, width, karras } = req.body;
   if (prompt) {
     // start the generation of an image with the given payload
     // https://github.com/ZeldaFan0225/ai_horde/blob/main/docs/classes/export_.md#postasyncimagegenerate
@@ -31,9 +31,9 @@ export const shGenerate = async (req: Request, res: Response) => {
       prompt,
       // https://github.com/ZeldaFan0225/ai_horde/blob/main/docs/interfaces/ModelGenerationInputStable.md
       params: {
-        height: height || 576,
-        width: width || 576,
-        karras: true,
+        height: (parseInt(height) && parseInt(height) < 3072 ? parseInt(height): 576) || 576,
+        width: (parseInt(width) && parseInt(width) < 3072 ? parseInt(width): 576) || 576,
+        karras
       },
       models: [model || "stable_diffusion"],
     }, {token: token || "0000000000"});
