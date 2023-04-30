@@ -22,11 +22,19 @@ const AiHorde = new AIHorde({
 });
 
 export const shGenerate = async (req: Request, res: Response) => {
-  const { prompt, model, token } = req.body;
+  const { prompt, model, token, height, width } = req.body;
   if (prompt) {
     // start the generation of an image with the given payload
+    // https://github.com/ZeldaFan0225/ai_horde/blob/main/docs/classes/export_.md#postasyncimagegenerate
     const data = await AiHorde.postAsyncImageGenerate({
+      // https://github.com/ZeldaFan0225/ai_horde/blob/main/docs/interfaces/GenerationInput.md
       prompt,
+      // https://github.com/ZeldaFan0225/ai_horde/blob/main/docs/interfaces/ModelGenerationInputStable.md
+      params: {
+        height: height || 576,
+        width: width || 576,
+        karras: true,
+      },
       models: [model || "stable_diffusion"],
     }, {token: token || "0000000000"});
     mainLogger.info(data);
