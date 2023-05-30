@@ -10,11 +10,12 @@ export interface IGetToken {
   scope: string;
 }
 
-class Authlink {
+class Cardboard {
   private _baseurl: string;
   private _axios: AxiosInstance;
+
   constructor() {
-    this._baseurl = "http://ghorde-authlink.kodski.com/api/v1/";
+    this._baseurl = "http://cardboard.ink/api/v1/";
     this._axios = axios.create({ baseURL: this._baseurl });
   }
 
@@ -55,33 +56,33 @@ class Authlink {
     return response.data;
   }
 
-  public async getGuilds(access_token: string): Promise<any> {
-    const response = await this._axios.get("users/@me/servers", {
-      headers: { Authorization: `Bearer ${access_token}` },
-    });
-    return response.data;
-  }
+  // public async getGuilds(access_token: string): Promise<any> {
+  //   const response = await this._axios.get("users/@me/servers", {
+  //     headers: { Authorization: `Bearer ${access_token}` },
+  //   });
+  //   return response.data;
+  // }
 
-  public async getGuildInfo(
-    access_token: string,
-    guildId: string
-  ): Promise<any> {
-    const response = await this._axios.get(`servers/${guildId}`, {
-      headers: { Authorization: `Bearer ${access_token}` },
-    });
-    return response.data;
-  }
+  // public async getGuildInfo(
+  //   access_token: string,
+  //   guildId: string
+  // ): Promise<any> {
+  //   const response = await this._axios.get(`servers/${guildId}`, {
+  //     headers: { Authorization: `Bearer ${access_token}` },
+  //   });
+  //   return response.data;
+  // }
 
-  public async getUserInGuild(
-    access_token: string,
-    guildId: string
-  ): Promise<any> {
-    const response = await this._axios.get(
-      `users/@me/servers/${guildId}/member`,
-      { headers: { Authorization: `Bearer ${access_token}` } }
-    );
-    return response.data;
-  }
+  // public async getUserInGuild(
+  //   access_token: string,
+  //   guildId: string
+  // ): Promise<any> {
+  //   const response = await this._axios.get(
+  //     `users/@me/servers/${guildId}/member`,
+  //     { headers: { Authorization: `Bearer ${access_token}` } }
+  //   );
+  //   return response.data;
+  // }
 }
 
-export default new Authlink();
+export default new Cardboard();

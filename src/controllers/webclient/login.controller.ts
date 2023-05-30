@@ -1,23 +1,23 @@
 import asyncHandler from "express-async-handler";
 import { Request, Response } from "express";
-import { Authlink } from "../../services";
+import { Cardboard } from "../../services";
 import ErrorHandler from "../../common/error-handler.common";
 import SuccessHandler from "../../common/success-handler.common";
 import { mainLogger } from "../../main";
 
-const AuthlinkCrudErrorHandler = new ErrorHandler("Authlink Crud");
-const AuthlinkCrudSuccessHandler = new SuccessHandler("Authlink Crud");
+const CardboardCrudErrorHandler = new ErrorHandler("Cardboard Crud");
+const CardboardCrudSuccessHandler = new SuccessHandler("Cardboard Crud");
 
 export const issueToken = asyncHandler(async (req: Request, res: Response) => {
   const { code } = req.body;
   if (!code) {
-    res.json(AuthlinkCrudErrorHandler.badRequest("Missing code."));
+    res.json(CardboardCrudErrorHandler.badRequest("Missing code."));
     return;
   }
   const { access_token, expires_in, refresh_token } =
-    await Authlink.exchangeInitialToken(code);
+    await Cardboard.exchangeInitialToken(code);
   res.json(
-    AuthlinkCrudSuccessHandler.created({
+    CardboardCrudSuccessHandler.created({
       access_token,
       expires_in,
       refresh_token,
@@ -32,14 +32,14 @@ export const refreshToken = asyncHandler(
     const { code } = req.body;
     if (!code) {
       res.json(
-        AuthlinkCrudErrorHandler.badRequest("Missing code: refresh token.")
+        CardboardCrudErrorHandler.badRequest("Missing code: refresh token.")
       );
       return;
     }
     const { access_token, expires_in, refresh_token } =
-      await Authlink.refreshToken(code);
+      await Cardboard.refreshToken(code);
     res.json(
-      AuthlinkCrudSuccessHandler.accepted({
+      CardboardCrudSuccessHandler.accepted({
         access_token,
         expires_in,
         refresh_token,
@@ -55,11 +55,11 @@ export const revokeToken = asyncHandler(async (req: Request, res: Response) => {
   mainLogger.info(`Revoke token: ${code}`);
   if (!code) {
     res.json(
-      AuthlinkCrudErrorHandler.badRequest("Missing code: access token.")
+      CardboardCrudErrorHandler.badRequest("Missing code: access token.")
     );
     return;
   }
-  await Authlink.revokeToken(code);
-  res.json(AuthlinkCrudSuccessHandler.ok({}));
+  await Cardboard.revokeToken(code);
+  res.json(CardboardCrudSuccessHandler.ok({}));
   return;
 });
