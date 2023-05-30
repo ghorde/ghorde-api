@@ -14,8 +14,8 @@ export const issueToken = asyncHandler(async (req: Request, res: Response) => {
     res.json(CardboardCrudErrorHandler.badRequest("Missing code."));
     return;
   }
-  const { access_token, expires_in, refresh_token } =
-    await Cardboard.exchangeInitialToken(code);
+  console.log(code)
+  const { access_token, expires_in, refresh_token } = await Cardboard.exchangeInitialToken(code);
   res.json(
     CardboardCrudSuccessHandler.created({
       access_token,
