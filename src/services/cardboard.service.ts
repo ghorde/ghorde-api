@@ -15,7 +15,8 @@ class Cardboard {
   private _axios: AxiosInstance;
 
   constructor() {
-    this._baseurl = "http://cardboard.ink/api/v1/";
+    // this is the base url of the carboard api
+    this._baseurl = "http://localhost:3000/api/v1/";
     this._axios = axios.create({ baseURL: this._baseurl });
   }
 
