@@ -53,40 +53,22 @@ class Cardboard {
     return;
   }
 
-  public async getUserInfo(access_token: string): Promise<any> {
-    const response = await this._axios.get("users/@me", {
-      headers: { Authorization: `Bearer ${access_token}` },
-    });
+  public async checkToken(access_token: string): Promise<any> {
+    const token = access_token;
+    const response = await this._axios.post(
+      "token/check",
+      new URLSearchParams({ token }),
+    )
     return response.data;
   }
 
-  // public async getGuilds(access_token: string): Promise<any> {
-  //   const response = await this._axios.get("users/@me/servers", {
-  //     headers: { Authorization: `Bearer ${access_token}` },
-  //   });
-  //   return response.data;
-  // }
-
-  // public async getGuildInfo(
-  //   access_token: string,
-  //   guildId: string
-  // ): Promise<any> {
-  //   const response = await this._axios.get(`servers/${guildId}`, {
-  //     headers: { Authorization: `Bearer ${access_token}` },
-  //   });
-  //   return response.data;
-  // }
-
-  // public async getUserInGuild(
-  //   access_token: string,
-  //   guildId: string
-  // ): Promise<any> {
-  //   const response = await this._axios.get(
-  //     `users/@me/servers/${guildId}/member`,
-  //     { headers: { Authorization: `Bearer ${access_token}` } }
-  //   );
-  //   return response.data;
-  // }
+  public async getUserInfo(access_token: string): Promise<any> {
+    console.log("here", access_token)
+    const response = await this._axios.get("users/@me", {
+      headers: { authorization: `Bearer ${access_token}` },
+    });
+    return response.data;
+  }
 }
 
 export default new Cardboard();

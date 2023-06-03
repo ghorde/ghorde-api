@@ -9,6 +9,7 @@ const UserControllerSuccessHandler = new SuccessHandler("User Controller");
 
 export const getUser = asyncHandler(async (req: Request, res: Response) => {
   const { code } = req.body;
+  console.log(code)
   if (!code) {
     res.json(UserControllerErrorHandler.badRequest("Missing code."));
     return;

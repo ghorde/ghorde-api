@@ -27,6 +27,17 @@ export const issueToken = asyncHandler(async (req: Request, res: Response) => {
   return;
 });
 
+export const checkToken = asyncHandler(async (req: Request, res: Response) => {
+  const { code } = req.body;
+  if (!code) {
+    res.json(CardboardCrudErrorHandler.badRequest("Missing code."));
+    return;
+  }
+  const user = await Cardboard.checkToken(code);
+  res.json(CardboardCrudSuccessHandler.ok(user));
+  return;
+});
+
 export const refreshToken = asyncHandler(
   async (req: Request, res: Response) => {
     const { code } = req.body;
@@ -63,3 +74,4 @@ export const revokeToken = asyncHandler(async (req: Request, res: Response) => {
   res.json(CardboardCrudSuccessHandler.ok({}));
   return;
 });
+
