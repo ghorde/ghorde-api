@@ -22,13 +22,10 @@ class Cardboard {
 
   public async exchangeInitialToken(code: string): Promise<IGetToken> {
     const grant_type = "authorization_code";
-    console.log('this')
     const response = await this._axios.post(
       "token",
       new URLSearchParams({ code, client_id, client_secret, grant_type })
     );
-    console.log('this too!')
-      console.log(response)
     return response.data;
   }
 
@@ -49,7 +46,7 @@ class Cardboard {
     await this._axios.post(
       "token/revoke",
       new URLSearchParams({ client_id, client_secret, token })
-    );
+    ).catch((err) => {console.log(err)});
     return;
   }
 
