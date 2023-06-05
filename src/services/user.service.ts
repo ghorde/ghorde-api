@@ -1,11 +1,8 @@
-export class User {
-  token?: string;
-  lastLogin?: number;
-  tokenExpiry?: number;
-  refreshToken?: string;
-  readonly id: string;
-  readonly name: string;
-  readonly subdomain: string;
-  readonly avatar?: string;
-  readonly banner?: string;
+export class IUser {
+  hordeToken?: string;
+  negativePrompt: string[];
+}
+
+export function isUserDoc(arg: any): arg is IUser {
+  return arg && arg.id && typeof arg.id == "string";
 }
