@@ -32,7 +32,7 @@ export const shGenerate = async (req: Request, res: Response) => {
   }
   let newPrompt
   if ('negativePrompt' in userDbData) {
-    newPrompt = prompt + ' ### ' + (userDbData.negativePrompt as Array<string>).join(', ')
+    newPrompt = prompt + '###' + (userDbData.negativePrompt as Array<string>).join(', ')
   }
   if (prompt && typeof prompt === 'string' && prompt.length > 0) {
     // start the generation of an image with the given payload
