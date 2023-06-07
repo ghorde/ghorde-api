@@ -1,12 +1,11 @@
-import axios from "axios";
-// import { AiHorde } from "../../services";
 import ErrorHandler from "../../common/error-handler.common";
 import SuccessHandler from "../../common/success-handler.common";
-import { isError } from "../../common/error.generic";
 import { Request, Response } from "express";
 
 import AIHorde from "@zeldafan0225/ai_horde";
 import { mainLogger } from "../../main";
+import { rounder } from "../../helpers";
+import { User } from "../../services";
 
 const AiHordeControllerErrorHandler = new ErrorHandler("AiHorde Controller");
 const AiHordeControllerSuccessHandler = new SuccessHandler(
@@ -22,24 +21,35 @@ const AiHorde = new AIHorde({
 });
 
 export const shGenerate = async (req: Request, res: Response) => {
-  const { prompt, model, token, height, width, karras } = req.body;
-  if (prompt) {
+  const { prompt, model, token, height, width, karras, guildedId } = req.body;
+  const userDbData = await User.service.read(guildedId);
+  let useToken
+  if ('hordeToken' in userDbData) {
+    useToken = userDbData.hordeToken
+    if (useToken === '') {
+      useToken = undefined
+    }
+  }
+  let newPrompt
+  if ('negativePrompt' in userDbData) {
+    newPrompt = prompt + ' ### ' + (userDbData.negativePrompt as Array<string>).join(', ')
+  }
+  if (prompt && typeof prompt === 'string' && prompt.length > 0) {
     // start the generation of an image with the given payload
     // https://github.com/ZeldaFan0225/ai_horde/blob/main/docs/classes/export_.md#postasyncimagegenerate
     const data = await AiHorde.postAsyncImageGenerate({
       // https://github.com/ZeldaFan0225/ai_horde/blob/main/docs/interfaces/GenerationInput.md
-      prompt,
+      prompt: newPrompt || prompt,
       // https://github.com/ZeldaFan0225/ai_horde/blob/main/docs/interfaces/ModelGenerationInputStable.md
       params: {
-        height: (parseInt(height) && parseInt(height) < 3072 ? parseInt(height): 576) || 576,
-        width: (parseInt(width) && parseInt(width) < 3072 ? parseInt(width): 576) || 576,
+        height: (rounder(parseInt(height), 64) < 3072 ? rounder(parseInt(height), 64): 576) || 576,
+        width: (rounder(parseInt(width), 64) < 3072 ? rounder(parseInt(width), 64): 576) || 576,
         karras
       },
       models: [model || "stable_diffusion"],
-    }, {token: token || "0000000000"});
-    mainLogger.info(data);
+    }, {token: token || useToken || "0000000000"});
     const { id } = data;
-    res.json({ id });
+    res.json({ id, token: useToken ? true : false, prompt: newPrompt || prompt, model: model || "stable_diffusion" });
     return;
   }
   res.json(AiHordeControllerErrorHandler.badRequest("No prompt provided"));
@@ -50,7 +60,6 @@ export const shCheck = async (req: Request, res: Response) => {
   const { id } = req.params;
   if (id) {
     const check = await AiHorde.getImageGenerationCheck(id);
-    mainLogger.info(check);
     res.json(check);
     return;
   }
